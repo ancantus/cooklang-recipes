@@ -25,7 +25,8 @@ git clone --depth 1 -q --branch "$ref" "https://github.com/$upstream" "$tmp/repo
 sha=$(git -C "$tmp/repo" rev-parse HEAD)
 
 mkdir -p "$root/.opencode/skills"
-rm -rf "$root/.opencode/skills"/*
+# Overlay: overwrite upstream-synced skills but preserve other project-local
+# skills already present in .opencode/skills/.
 cp -r "$tmp/repo/skills/." "$root/.opencode/skills/"
 
 python3 - "$root" <<'EOF'
@@ -35,10 +36,14 @@ bridge = (' '.join(
     """**Tooling bridge (this project, skills-only install).** This copy of the
     cooklang skills runs without the Cook MCP server. Use the local CookCLI
     instead. In the repo root: `make doctor` validates the whole collection
-    (including the file you just wrote) and fails on errors; `cook recipe read
-    <path>` or `cook recipe read <path> -f json` parses and inspects a file;
-    `cook search <term>` searches; from `recipes/`, `cook sl <file>` builds a
-    shopping list (aisle and pantry config apply from `recipes/config/`). When
+    and fails on errors — this is the project linter; never run
+    `cook doctor validate` from the repo root directly, it scans the
+    gitignored `dist/` build copy and mis-resolves `./` references (false
+    errors). `cook recipe read <path>` or `cook recipe read <path> -f json`
+    parses and inspects a file; `cook search <term>` searches; from
+    `recipes/`, `cook sl <file>` builds a shopping list and `cook doctor
+    aisle` lists ingredients missing from `recipes/config/aisle.conf` and
+    `config/pantry.conf`. When
     writing or editing files, save them under `recipes/` and run `make doctor`
     before claiming success. Refresh the skills with
     `scripts/sync-cooklang-skills.sh` from upstream cooklang-skills.
