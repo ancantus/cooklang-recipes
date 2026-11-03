@@ -34,6 +34,7 @@ From a description, a family recipe from memory, or a dish the user names:
 
 - Metadata is YAML frontmatter, never the deprecated `>>` lines — for metadata-focused work, follow the metadata skill.
 - Recipe images live beside the file with a matching name (`Baked Potato.jpg`), or as step images (`Baked Potato.3.jpg`); see the syntax reference under Images.
+- Scan/photo policy: never commit page scans or source snapshots into the repo, and a page scan must never become a cover image. From photo sources only actual cookbook illustrations (the printed food photography) may be used as recipe images, and only with the owner's approval. Keep source scans elsewhere and reference them via `source:` frontmatter.
 - Match the surrounding file's conventions (units, casing, section style) — reason: a recipe that mixes styles is harder for the user to maintain.
 - Touch only the file the task names. If a change demonstrably needs another file (e.g. a referenced sub-recipe), name that file and explain why before editing it.
 - Do not set `force: true` to `write_recipe` to get past validation errors; fix them. Use it only when the user explicitly wants a file saved as-is.

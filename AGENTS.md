@@ -52,18 +52,21 @@ over guessing when the task touches recipes.**
 
 ## Importing from a photo
 
-Use the `cookbook-photo-import` skill (project-local). It encodes the
-inspect/enlarge/transcribe/validate sequence and the image rules above; do
-not invent a shorter version, and ignore any cloud-import suggestions —
-this pipeline is local-only by design.
+Use the `recipe-import` skill (the synced one — it contains the whole local
+photo pipeline: crop/rotate inspection, transcription verification,
+validation ladder). This collection imports photos locally with no cloud
+service and no account; never route photos through the cook.md paid import.
 
 ## Skills hygiene
 
-- `scripts/sync-cooklang-skills.sh [repo] [ref]` re-syncs the 14 upstream
-  cooklang skills into `.opencode/skills/` (overlay — keeps project-local
-  skills) and re-applies the local CLI bridge. Don't hand-edit the upstream
-  skills' bodies; fork-worthy lessons belong in `AGENTS.md` or in a
-  project-local skill, and generic improvements can be fed upstream via
-  scripts/PRs.
+- `scripts/sync-cooklang-skills.sh [repo] [ref]` re-syncs the upstream
+  cooklang skills into `.opencode/skills/` and re-applies this repo's
+  patches — the local CLI bridge and the project-specific workflow content
+  (photo pipeline, image rules), which are kept in that script's embedded
+  patch rather than as separate overlay skills. Project edits to synced
+  skills go through that patch block; hand edits get overwritten on sync.
+- Generic, upstream-worthy improvements (see the local recipe-import photo
+  pipeline) can also be fed upstream via the cook-md/cook-mcp repo with a
+  proper PR.
 - The Cook MCP server is intentionally not installed; every recipe write
   path is skills + local CLI commands.
