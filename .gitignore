@@ -1,2 +1,8 @@
 .DS_Store
 Thumbs.db
+
+# cook artifacts
+dist/
+_site/
+cook
+*.tar.gz*

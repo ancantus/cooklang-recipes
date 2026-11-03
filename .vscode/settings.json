@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.cook": "cooklang",
+    "*.menu": "cooklang"
+  },
+  "search.exclude": {
+    "dist": true
+  },
+  "cooklang.languageServer.path": "cook",
+  "cooklang.languageServer.args": ["lsp"]
+}

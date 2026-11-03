@@ -1,0 +1,64 @@
+name: Publish recipes to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: publish-pages
+  cancel-in-progress: true
+
+env:
+  COOK_VERSION: 0.39.0
+  # Project Pages serves at https://<owner>.github.io/<repo-name>/.
+  # Replace with "/" if deploying to a custom domain or user/organization pages root.
+  BASE_URL: /${{ github.event.repository.name }}/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CookCLI (${{ env.COOK_VERSION }})
+        run: |
+          V=${COOK_VERSION#v}
+          BASE="https://github.com/cooklang/CookCLI/releases/download/v$V"
+          curl -sSL -o cook.tar.gz "$BASE/cook-$V-linux-x86_64-gnu.tar.gz"
+          curl -sSL -o cook.tar.gz.sha256 "$BASE/cook-$V-linux-x86_64-gnu.tar.gz.sha256"
+          echo "$(cat cook.tar.gz.sha256)  cook.tar.gz" | sha256sum -c -
+          tar xzf cook.tar.gz cook
+          sudo install -m 755 cook /usr/local/bin/cook
+          cook --version
+
+      - name: Validate recipes (doctor)
+        working-directory: recipes
+        run: cook doctor validate
+
+      - name: Build static site
+        run: >
+          cook build web _site --base-path recipes
+          --base-url "$BASE_URL"
+          --repo-url "https://github.com/${{ github.repository }}"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

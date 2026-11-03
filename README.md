@@ -1,62 +1,48 @@
-# recipes
+# cooklang-cli
 
-Personal recipe collection in [Cooklang](https://cooklang.org) — plain-text
-`.cook` files managed with [CookCLI](https://cooklang.org/cli/).
+Personal recipe collection in [Cooklang](https://cooklang.org), managed with
+[CookCLI](https://cooklang.org/cli/). Recipe pages are published as a static
+site via GitHub Pages on every push to `main`.
 
-## Layout
+## Repo layout
 
 | Path | What it is |
 | --- | --- |
-| `*.cook` (root + folders) | Recipes — root for main dishes, folders for categories (e.g. `Breakfast/`, `Shared/`) |
-| `*.menu` | Meal plans that combine recipes |
-| `config/aisle.conf` | Maps ingredients to supermarket aisles (used by shopping lists) |
-| `config/pantry.conf` | What you already have — shopping lists exclude these |
-| `db/` | Per-ingredient shopping extras (urgency, notes) |
-| `reports/*.jinja` | Jinja templates for `cook report` (cost, ingredients, recipe cards) |
+| `recipes/` | The collection: `.cook` recipes, `.menu` meal plans, `config/` (aisle + pantry), `db/`, `reports/` templates — see [`recipes/README.md`](recipes/README.md) |
+| `Makefile` | Everyday runner targets (`serve`, `build`, `doctor`, `search`) |
+| `.github/workflows/publish.yml` | On pushes to `main`: validate recipes, build the static site, deploy to GitHub Pages |
 
-## Install CookCLI
+## Quick start
 
-`~/.local/bin/cook` (v0.39.0), or see the
-[download page](https://cooklang.org/cli/download/) for brew/rpm/cargo options.
-
-## Everyday commands
+Requires `cook` ≥ 0.35 on `$PATH` (see the
+[download page](https://cooklang.org/cli/download/)).
 
 ```sh
-# Read a recipe (scale with a suffix, e.g. "Risotto.cook:2" for double)
-cook recipe read "Risotto.cook"
+# Browse recipes locally
+make serve               # → http://localhost:9080
 
-# Combined shopping list, grouped by aisle, minus pantry items
-cook sl "Weekly Plan.menu"
-
-# Full-text search over everything
-cook search tomato
-
-# Import any recipe from a URL into a clean .cook file
-cook import <url>
-
-# Check the collection for errors / missing aisle+pantry entries
-cook doctor
-
-# Browse locally in a browser
-cook server
-# → http://127.0.0.1:9080
+# Validate / build / search
+make doctor
+make build               # static site in dist/ (opens from file://)
+make open
+make search TERM=tomato
 ```
 
-## Adding a recipe
+## GitHub Pages
 
-Create `My Dish.cook` and write it in Cooklang — see the
-[spec](https://cooklang.org/docs/spec/) or `cook seed`'s examples:
+The workflow builds with `--base-url /<repo-name>/`, which is right for a
+project site at `https://<owner>.github.io/<repo-name>/`. Options:
 
-```cooklang
----
-title: Pesto Pasta
-servings: 2
-tags: pasta, quick
----
+- **Custom domain:** set `BASE_URL` in `.github/workflows/publish.yml`
+  (e.g. `BASE_URL: /` if served at a domain root), or pin the cook version
+  via the same file's `COOK_VERSION` env.
+- **First time:** enable *Settings → Pages → Build and deployment → Source:
+  GitHub Actions*. Deploys then happen automatically on push.
 
-Boil @water{1%L} with @salt{1%tbsp}, cook @spaghetti{200%g} for ~{8%min}.
+## Editing
 
-Toss with @pesto{3%tbsp} and top with @parmesan{grated} and @black pepper{}.
-```
-
-Then `cook doctor` to catch typos, and commit.
+`.vscode/settings.json` wires the official Cooklang extension to `cook lsp`
+(syntax checking, completion, hover docs). Run `make doctor` before
+committing. The cooklang.org docs cover the
+[Cooklang syntax](https://cooklang.org/docs/spec/) and the
+[CLI commands](https://cooklang.org/cli/).
