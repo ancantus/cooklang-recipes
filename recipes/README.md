@@ -8,6 +8,7 @@ Personal recipe collection in [Cooklang](https://cooklang.org) — plain-text
 | Path | What it is |
 | --- | --- |
 | `*.cook` (root + folders) | Recipes — root for main dishes, folders for categories (e.g. `Breakfast/`, `Shared/`) |
+| recipe images | Live next to their recipe: `Risotto.jpg` is the cover; `Risotto.1.jpg`, `Risotto.2.jpg`, … become a photo gallery. `.jpg/.jpeg/.png/.gif/.webp/.avif` |
 | `*.menu` | Meal plans that combine recipes |
 | `config/aisle.conf` | Maps ingredients to supermarket aisles (used by shopping lists) |
 | `config/pantry.conf` | What you already have — shopping lists exclude these |
