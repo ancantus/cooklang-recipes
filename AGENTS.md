@@ -57,16 +57,12 @@ photo pipeline: crop/rotate inspection, transcription verification,
 validation ladder). This collection imports photos locally with no cloud
 service and no account; never route photos through the cook.md paid import.
 
-## Skills hygiene
+## Skills
 
-- `scripts/sync-cooklang-skills.sh [repo] [ref]` re-syncs the upstream
-  cooklang skills into `.opencode/skills/` and re-applies this repo's
-  patches — the local CLI bridge and the project-specific workflow content
-  (photo pipeline, image rules), which are kept in that script's embedded
-  patch rather than as separate overlay skills. Project edits to synced
-  skills go through that patch block; hand edits get overwritten on sync.
-- Generic, upstream-worthy improvements (see the local recipe-import photo
-  pipeline) can also be fed upstream via the cook-md/cook-mcp repo with a
-  proper PR.
-- The Cook MCP server is intentionally not installed; every recipe write
-  path is skills + local CLI commands.
+The skills in `.opencode/skills/` are our fork: they began as a snapshot of
+upstream `cooklang/cooklang-skills` (14 skills @ `7d96745`, with the local
+CLI bridge applied in place of MCP-server instructions) and are now edited
+directly as repo content. Feel free to change them whenever a rule needs
+tuning; upstream is just where they came from, not something we track.
+The Cook MCP server is intentionally not installed; every recipe write path
+is skills + local CLI commands.
