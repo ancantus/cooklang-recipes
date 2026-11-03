@@ -8,7 +8,7 @@ Personal recipe collection in [Cooklang](https://cooklang.org) — plain-text
 | Path | What it is |
 | --- | --- |
 | `*.cook` (root + folders) | Recipes — root for main dishes, folders for categories (e.g. `Breakfast/`, `Shared/`) |
-| recipe images | Live next to their recipe: `Risotto.jpg` is the cover; `Risotto.1.jpg`, `Risotto.2.jpg`, … become a photo gallery. `.jpg/.jpeg/.png/.gif/.webp/.avif` |
+| recipe images | Live next to their recipe: `Risotto.jpg` is the cover. `Risotto.N.jpg` attaches a photo to step `N` (1-based, global step order across all `== sections ==`). URLs also accepted via `image:` / `images:` metadata keys. Formats: `.jpg/.jpeg/.png/.gif/.webp/.avif` |
 | `*.menu` | Meal plans that combine recipes |
 | `config/aisle.conf` | Maps ingredients to supermarket aisles (used by shopping lists) |
 | `config/pantry.conf` | What you already have — shopping lists exclude these |
