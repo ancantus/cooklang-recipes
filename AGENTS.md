@@ -18,10 +18,12 @@ over guessing when the task touches recipes.**
   `.menu` change is done; it fails on syntax errors and broken references.
 - Inspect a single file with `cook recipe read <path> -f json`.
 - Run `cook doctor aisle` from `recipes/` to find ingredients missing from
-  `config/aisle.conf` / `config/pantry.conf`. Never add pantry entries
-  silently — pantry items are subtracted from shopping lists, so a wrong
-  entry hides real purchases. Ask first; obvious `aisle.conf` groupings may
-  be added directly.
+  `config/aisle.conf` / `config/pantry.conf`. **`config/pantry.conf` starts
+  from zero on purpose** (the seeded stock data was fictional and removed) —
+  never assume anything is in the pantry, never add entries silently: pantry
+  items are subtracted from shopping lists, so a wrong entry hides real
+  purchases. Ask the owner, who fills it in as they shop. Obvious
+  `aisle.conf` groupings may be added directly.
 - Do **not** run `cook doctor validate` from the repo root: it scans the
   gitignored `dist/` raw copy and resolves `./` references against the scan
   root, producing phantom errors. Use `make doctor` (which `cd`s into
