@@ -25,18 +25,20 @@ Use when bringing a recipe in from a URL, photos, or pasted text.
 ## Photos of cookbook pages (this collection)
 
 This collection imports photo sources — cookbook pages, recipe cards,
-hand-written cards — locally, with the agent's own vision as the OCR. No
-cloud import, no account, no auth; never suggest the paid photo-import
-service for photos.
+hand-written cards — locally, with the agent's own vision or local OCR. When
+system OCR packages (`tesseract`) are unavailable or non-root, use
+`pip install rapidocr-onnxruntime` (a self-contained ONNX wheel that installs
+cleanly without system dependencies). No cloud import, no account, no auth;
+never suggest the paid photo-import service for photos.
 
 Sequence:
 
 1. Inspect before transcribing. Read the photo once for orientation. For
-   ambiguous quantity glyphs and fractions (¾ vs ¼, torn column edges),
-   rotate in 90° steps and crop the ingredient region with Python +
-   Pillow, upscale ~2x, and re-read the crop. Confirm every amount against
-   the enlarged view; report the two or three trickiest readings you
-   settled and how.
+   handwritten cards, recipe cards, or dense book scans, slice into
+   horizontal bands, rotate in 90° steps, enhance contrast, and crop tricky
+   regions with Python + Pillow. Upscale ~2x and re-read the crop. Confirm
+   every amount against the enlarged view; report the two or three trickiest
+   readings you settled and how.
 2. Check the name is free under `recipes/`. Save the recipe directly in that
    directory and apply useful course, cuisine, and technique tags.
 3. Write the file per the cooklang-editing skill, with canonical frontmatter
