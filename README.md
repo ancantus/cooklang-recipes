@@ -8,7 +8,8 @@ site via GitHub Pages on every push to `main`.
 
 | Path | What it is |
 | --- | --- |
-| `recipes/` | The cookbook: `.cook` recipes and their images, plus recipe report templates — see [`recipes/README.md`](recipes/README.md) |
+| `recipes/` | Flat collection of `.cook` recipes and adjacent Git LFS images — see [`recipes/README.md`](recipes/README.md) |
+| `reports/` | CookCLI Jinja report templates |
 | `.agents/skills/` | Shared agent tooling for Codex CLI, OpenCode CLI, and T3 |
 | `Makefile` | Everyday runner targets (`serve`, `build`, `doctor`, `search`) |
 | `.github/workflows/ci.yml` | On pull requests: validate recipes, build the site, and check its entry point |
@@ -16,8 +17,9 @@ site via GitHub Pages on every push to `main`.
 
 ## Quick start
 
-Requires `cook` ≥ 0.35 on `$PATH` (see the
+Requires CookCLI 0.39.0 on `$PATH` (see the
 [download page](https://cooklang.org/cli/download/)).
+Install [Git LFS](https://git-lfs.com/) to clone and update recipe images.
 
 ```sh
 # Browse recipes locally

@@ -22,9 +22,9 @@ build:
 open: build
 	xdg-open '$(DIST_DIR)/index.html' 2>/dev/null || open '$(DIST_DIR)/index.html'
 
-## Validate all recipes; fails on syntax errors
+## Strictly validate recipes; errors and warnings fail
 doctor:
-	cd $(RECIPES) && $(COOK) doctor validate
+	cd $(RECIPES) && $(COOK) doctor validate --strict
 
 ## Full-text search: make search TERM=tomato
 search:

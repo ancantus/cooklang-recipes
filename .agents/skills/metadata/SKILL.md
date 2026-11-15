@@ -1,15 +1,15 @@
 ---
 name: metadata
-description: Use when adding, normalizing, or fixing YAML frontmatter in Cooklang .cook recipes or .menu plans (title, tags, source, servings/yield, times, diet, locale, images), including converting old >> metadata lines and bulk metadata changes across a library.
+description: Use when adding, normalizing, or fixing YAML frontmatter in Cooklang .cook recipes (title, tags, source, servings/yield, times, diet, locale, images), including converting old >> metadata lines and bulk metadata changes across a library.
 ---
 
 # Skill: metadata
 
-**Project workflow.** Use the local CookCLI. From the repository root, run `make doctor` to validate recipes, `cook recipe read <path>` to inspect one, and `make search TERM=<word>` to search. Keep `.cook` files and recipe images under `recipes/`.
+**Project workflow.** Keep `.cook` files directly under `recipes/`. Use lowercase, hyphenated tags for organization. Run `make doctor` from the repository root after metadata edits; it uses strict validation.
 
-Use when adding, normalizing, or fixing recipe/menu metadata (YAML frontmatter): titles, tags, source/author, servings/yield, times, diet, locale, images, or bulk metadata changes across a library.
+Use when adding, normalizing, or fixing recipe metadata (YAML frontmatter): titles, tags, source/author, servings/yield, times, diet, locale, images, or bulk metadata changes across a library.
 
-This skill owns all metadata guidance. The cooklang-editing and meal-planning skills defer metadata/frontmatter work to here.
+This skill owns all metadata guidance. The cooklang-editing skill defers metadata/frontmatter work to here.
 
 ## Hard rule
 
@@ -19,9 +19,9 @@ Metadata is YAML frontmatter between `---` markers at the very start of the file
 
 Changing metadata — tags, cuisine, source, any frontmatter key — on one file or many:
 
-1. Pick the targets. Use `search_recipes` (`tag`, or words) or `list_recipes` (`dir` for a folder) rather than reading the whole library. For a rule like "everything in Desserts/", the folder listing is the selection.
+1. Pick the target recipes. This collection is flat, so select files by their frontmatter tags or recipe names rather than directories.
 2. For each file: `read_recipe`, change only the frontmatter, and keep the recipe body byte-for-byte. Match the file's existing key names, casing, order and tag style; add a frontmatter block if the file has none; never duplicate a tag.
-3. Save each file with `write_recipe` (`.cook`) or `write_menu` (`.menu`), sending the full file content — there is no metadata-only write.
+3. Save each recipe as a `.cook` file directly under `recipes/`.
 4. More than about 10 files → tell the user how many files you will touch and get a yes first; every write replaces a real file.
 5. Tell the user what you changed, in which files, and name any files you skipped and why.
 
@@ -35,7 +35,8 @@ For a brand-new file, the frontmatter is part of the content you save with `writ
 | `source`, `source.name` | Where it came from (URL or text). | `https://example.org/recipe`, `mums` |
 | `source.url` | URL when the nested form is used. | `https://example.org/recipe` |
 | `author`, `source.author` | Recipe author. | `John Doe` |
-| `servings`, `serves`, `yield` | People/amount. Leading number drives scaling; the rest shows as units. | `2`, `15 cups worth` |
+| `servings`, `serves` | Number of portions; drives scaling. | `2` |
+| `yield` | Numeric output amount when applicable. Put units or explanatory wording in `description`. | `6` |
 | `course`, `category` | Meal category or course. | `dinner` |
 | `locale` | ISO 639 language, optional `_` then ISO 3166 country. Used for spelling and pluralisation. | `en_GB`, `fr` |
 | `time`, `time required`, `duration` | Total prep + cook time. Prefer `HhMm`. | `1h30m` |
@@ -44,7 +45,7 @@ For a brand-new file, the frontmatter is part of the content you save with `writ
 | `difficulty` | Difficulty level. | `easy` |
 | `cuisine` | Cuisine. | `French` |
 | `diet` | Dietary suitability; string or array. | `gluten-free`, `[vegan, halal]` |
-| `tags` | Descriptive tags (array). | `[baking, summer]` |
+| `tags` | Descriptive, lowercase, hyphenated tags. | `baking, summer, side-dish` |
 | `image`, `images`, `picture`, `pictures` | Image URL, or array of URLs. | `https://example.org/img.jpg` |
 | `description`, `introduction` | Notes about the recipe. | `Traditional Uzbek dish…` |
 
@@ -52,7 +53,7 @@ For a brand-new file, the frontmatter is part of the content you save with `writ
 
 - Frontmatter goes at the very top of the file, before any step or section.
 - Match the file's existing conventions (key spelling, casing) — reason: a file that mixes `serves` and `servings` is harder to maintain.
-- Keep `servings`/`yield` accurate — reason: they drive recipe scaling and any shopping-list or menu math built on top.
+- Keep `servings`/`yield` accurate — they drive recipe scaling.
 - `search_recipes` with `tag` matches the frontmatter `tags` list, so consistent tags make the library searchable.
 - Touch only the files the task names.
 

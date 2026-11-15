@@ -14,9 +14,8 @@ editor config, and shared agent skills. **Project skills live in
 
 ## Linter / validation
 
-- **`make doctor` is the linter.** Run it before claiming any `.cook` or
-  recipe change is done; CookCLI reports issues but its default mode does not
-  fail on warnings.
+- **`make doctor` is the linter.** It runs `cook doctor validate --strict`.
+  Fix every reported error and warning before claiming a recipe change is done.
 - Inspect a single file with `cook recipe read <path> -f json`.
 - The collection is recipe content only: do not add pantry inventory,
   shopping-list data, aisle configuration, or shopping-list features.
@@ -27,12 +26,15 @@ editor config, and shared agent skills. **Project skills live in
 
 ## Files and layout
 
-- Recipes in `recipes/`, categories as folders (Breakfast/, Salads/, Breads/,
-  Shared/). This directory is for `.cook` recipes and their images; do not add
+- Keep all `.cook` files directly in `recipes/`; use frontmatter tags to
+  organize by course, cuisine, technique, ingredients, and reusable components.
+  Tags use lowercase, hyphenated values. Do not create category folders or
   `.menu` files.
-- Recipe images sit next to the `.cook` file: `Name.jpg` = cover,
-  `Name.N.jpg` = photo for step N (1-based across the whole file, even
-  though per-section numbering restarts in UI displays).
+- Store images beside their `.cook` file under Git LFS. CookCLI discovers
+  cover and step images by filename next to the recipe: `Name.jpg` = cover,
+  `Name.N.jpg` = step N (1-based across the whole file, even though section
+  numbering restarts in UI displays). `.gitattributes` tracks the supported
+  image formats.
 - Try to match an existing recipe's frontmatter style (canonical keys:
   `title`, `servings` (bare number), `time required`, `course`, `diet`,
   `tags`, `source`, `locale`).

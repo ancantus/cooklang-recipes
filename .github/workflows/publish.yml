@@ -25,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Install CookCLI (${{ env.COOK_VERSION }})
         run: |
@@ -37,9 +39,9 @@ jobs:
           sudo install -m 755 cook /usr/local/bin/cook
           cook --version
 
-      - name: Validate recipes (doctor)
+      - name: Validate recipes (strict)
         working-directory: recipes
-        run: cook doctor validate
+        run: cook doctor validate --strict
 
       - name: Build static site
         run: >

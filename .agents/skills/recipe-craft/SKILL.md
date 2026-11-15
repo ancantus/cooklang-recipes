@@ -48,16 +48,13 @@ and stage the rest as swaps rather than deciding silently.
    risky on the device, replace it and say why in a `-- comment`.
 5. **Swaps area:** put every variant worth the owner's attention in a
    `> Swaps to consider` note at the end, using optional ingredients
-   (`@?Guinness{330%ml}`, `@?lamb shoulder{800%g}`) so they can be included
-   later from shopping lists without editing the file. Do not pirate a
+   (`@?Guinness{330%ml}`, `@?lamb shoulder{800%g}`) so the owner can add them
+   later without editing the recipe. Do not pirate a
    choice into the body the owner asked to keep open.
 6. **Write and validate** exactly like `../cooklang-editing/SKILL.md` —
-   quantities inline per step, one quantity per ingredient, canonical
-   frontmatter — then the validation ladder: `cook recipe read -f json`,
-   `make doctor`, from `recipes/`: `cook sl <file>` and `cook doctor aisle`.
-   New ingredients missing from `config/aisle.conf` with obvious
-   supermarket grouping may be added directly; `config/pantry.conf` is
-   never touched without the owner.
+   save the recipe directly under `recipes/`, use lowercase, hyphenated
+   tags, put quantities inline per step, and run `make doctor` in strict
+   mode until there are no warnings or errors.
 7. **Report** what was blended and from where, what is staged as swaps, and
    any assumptions or untested steps that the owner may want to adjust.
 

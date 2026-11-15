@@ -7,9 +7,9 @@ Personal recipe collection in [Cooklang](https://cooklang.org) — plain-text
 
 | Path | What it is |
 | --- | --- |
-| `*.cook` (root + folders) | Recipes — root for main dishes, folders for categories (e.g. `Breakfast/`, `Shared/`) |
-| recipe images | Live next to their recipe: `Risotto.jpg` is the cover. `Risotto.N.jpg` attaches a photo to step `N` (1-based, global step order across all `== sections ==`). URLs also accepted via `image:` / `images:` metadata keys. Formats: `.jpg/.jpeg/.png/.gif/.webp/.avif` |
-| `reports/*.jinja` | Jinja templates for `cook report` (cost, ingredients, recipe cards) |
+| `*.cook` | All recipes live directly in this directory; use tags for organization |
+| `Name.jpg` | Cover image, stored beside its recipe and tracked by Git LFS |
+| `Name.N.jpg` | Photo for step `N` (1-based across the whole file), stored beside its recipe and tracked by Git LFS |
 
 ## Install CookCLI
 
@@ -18,8 +18,10 @@ Personal recipe collection in [Cooklang](https://cooklang.org) — plain-text
 
 ## Everyday commands
 
-This directory is for recipes and recipe-related assets. Pantry inventory,
+This directory contains recipes and their images only. Pantry inventory,
 shopping lists, and meal-plan `.menu` files are outside this cookbook's scope.
+Use lowercase, hyphenated frontmatter tags such as `breakfast`, `side-dish`,
+`instant-pot`, and `component` instead of creating category directories.
 
 ```sh
 # Read a recipe (scale with a suffix, e.g. "Risotto.cook:2" for double)
@@ -31,8 +33,8 @@ cook search tomato
 # Import any recipe from a URL into a clean .cook file
 cook import <url>
 
-# Validate all recipes
-cook doctor validate
+# Strictly validate all recipes
+make doctor
 
 # Browse locally in a browser
 cook server
@@ -56,4 +58,4 @@ Boil @water{1%L} with @salt{1%tbsp}, cook @spaghetti{200%g} for ~{8%min}.
 Toss with @pesto{3%tbsp} and top with @parmesan{grated} and @black pepper{}.
 ```
 
-Then `cook doctor validate` to review errors and warnings, and commit.
+Then `make doctor` to validate strictly, and commit.

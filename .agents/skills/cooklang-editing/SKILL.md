@@ -1,22 +1,22 @@
 ---
 name: cooklang-editing
-description: Use when writing a new Cooklang recipe or editing or fixing a .cook file - ingredients, cookware, timers, steps, sections, or resizing a recipe for good. For metadata/frontmatter changes use the metadata skill; to just show scaled amounts use scale-recipe. Not for meal plans (.menu) or importing from a URL/text.
+description: Use when writing a new Cooklang recipe or editing or fixing a .cook file - ingredients, cookware, timers, steps, sections, or resizing a recipe for good. For metadata/frontmatter changes use the metadata skill; to just show scaled amounts use scale-recipe. Not for importing from a URL/text.
 ---
 
 # Skill: cooklang-editing
 
-**Project workflow.** Use the local CookCLI. From the repository root, run `make doctor` to validate recipes, `cook recipe read <path>` to inspect one, and `make search TERM=<word>` to search. Keep `.cook` files and recipe images under `recipes/`.
+**Project workflow.** Keep every `.cook` file and its images directly in `recipes/`; use lowercase, hyphenated tags instead of category folders. Images use Git LFS. Run `make doctor` from the repository root for strict validation.
 
 Use when creating, editing, scaling, or fixing .cook recipe files.
 
-This skill is for .cook recipes only. If the task is actually about a .menu meal plan, follow the meal-planning skill (`../meal-planning/SKILL.md`) instead. For metadata/frontmatter changes (title, tags, source, servings, etc.), follow the metadata skill (`../metadata/SKILL.md`).
+This skill is for `.cook` recipes only. For metadata/frontmatter changes (title, tags, source, servings, etc.), follow the metadata skill (`../metadata/SKILL.md`).
 
 ## Workflow
 
 1. If editing an existing file, read it with `read_recipe` first (use the path exactly as `list_recipes` / `search_recipes` returned it); understand its style and structure.
-2. If creating a file, look at the collection layout with `list_recipes` and pick an idiomatic folder and name that match the existing ones.
-3. Make the change using Cooklang syntax. For scaling, fixed quantities (`@salt{=1%tsp}`), or recipe references (`@./path`), consult the `https://cooklang.org/docs/spec/` resource. `validate` warns "Unnecessary scaling lock modifier" on fixed quantities (`{=…}`): a known parser quirk; keep the `=` and ignore that warning.
-4. Self-check the content against the cooklang-validation rules — no separate ingredient section, each quantity declared once inline, multi-word names braced — then run `validate` with the new text as `content` (and `as_path` set to where it will be saved). Fix every error before saving.
+2. If creating a file, save it directly under `recipes/` and use tags for its course, cuisine, and other useful categories.
+3. Make the change using Cooklang syntax. For scaling, fixed quantities (`@salt{=1%tsp}`), or recipe references (`@./Recipe Name`), consult the `https://cooklang.org/docs/spec/` resource.
+4. Self-check the content against the cooklang-validation rules — no separate ingredient section, each quantity declared once inline, multi-word names braced — then run `make doctor` from the repository root. Fix every warning and error before saving.
 5. Save with `write_recipe`, always sending the full file content (there is no partial edit). It validates again and refuses to save content with errors.
 6. Tell the user what you saved and where.
 
@@ -33,7 +33,7 @@ From a description, a family recipe from memory, or a dish the user names:
 ## Rules
 
 - Metadata is YAML frontmatter, never the deprecated `>>` lines — for metadata-focused work, follow the metadata skill.
-- Recipe images live beside the file with a matching name (`Baked Potato.jpg`), or as step images (`Baked Potato.3.jpg`); see the syntax reference under Images.
+- Store cover and step images beside their recipe files; `.gitattributes` tracks supported image formats with Git LFS.
 - Scan/photo policy: never commit page scans or source snapshots into the repo, and a page scan must never become a cover image. From photo sources only actual cookbook illustrations (the printed food photography) may be used as recipe images, and only with the owner's approval. Keep source scans elsewhere and reference them via `source:` frontmatter.
 - Match the surrounding file's conventions (units, casing, section style) — reason: a recipe that mixes styles is harder for the user to maintain.
 - Touch only the file the task names. If a change demonstrably needs another file (e.g. a referenced sub-recipe), name that file and explain why before editing it.
