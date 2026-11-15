@@ -1,0 +1,42 @@
+name: Cookbook CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  COOK_VERSION: 0.39.0
+  BASE_URL: /${{ github.event.repository.name }}/
+  REPO_URL: https://github.com/${{ github.repository }}
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CookCLI (${{ env.COOK_VERSION }})
+        run: |
+          V=${COOK_VERSION#v}
+          BASE="https://github.com/cooklang/CookCLI/releases/download/v$V"
+          curl -sSL -o cook.tar.gz "$BASE/cook-$V-linux-x86_64-gnu.tar.gz"
+          curl -sSL -o cook.tar.gz.sha256 "$BASE/cook-$V-linux-x86_64-gnu.tar.gz.sha256"
+          echo "$(cat cook.tar.gz.sha256)  cook.tar.gz" | sha256sum -c -
+          tar xzf cook.tar.gz cook
+          sudo install -m 755 cook /usr/local/bin/cook
+          cook --version
+
+      - name: Validate recipes
+        working-directory: recipes
+        run: cook doctor validate
+
+      - name: Build static site
+        run: >
+          cook build web _site --base-path recipes
+          --base-url "$BASE_URL"
+          --repo-url "$REPO_URL"
+
+      - name: Check generated site entry point
+        run: test -s _site/index.html

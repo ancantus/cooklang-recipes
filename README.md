@@ -11,6 +11,7 @@ site via GitHub Pages on every push to `main`.
 | `recipes/` | The cookbook: `.cook` recipes and their images, plus recipe report templates — see [`recipes/README.md`](recipes/README.md) |
 | `.agents/skills/` | Shared agent tooling for Codex CLI, OpenCode CLI, and T3 |
 | `Makefile` | Everyday runner targets (`serve`, `build`, `doctor`, `search`) |
+| `.github/workflows/ci.yml` | On pull requests: validate recipes, build the site, and check its entry point |
 | `.github/workflows/publish.yml` | On pushes to `main`: validate recipes, build the static site, deploy to GitHub Pages |
 
 ## Quick start

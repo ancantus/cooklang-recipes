@@ -5,7 +5,7 @@ description: Use when the user wants to write or run a custom Jinja report templ
 
 # Skill: Report Authoring
 
-**Tooling bridge (this project, skills-only install).** This copy of the cooklang skills runs without the Cook MCP server. Use the local CookCLI instead. In the repo root: `make doctor` validates the whole collection and fails on errors — this is the project linter; never run `cook doctor validate` from the repo root directly, it scans the gitignored `dist/` build copy and mis-resolves `./` references (false errors). `cook recipe read <path>` or `cook recipe read <path> -f json` parses and inspects a file; `cook search <term>` searches; from `recipes/`, `cook sl <file>` builds a shopping list and `cook doctor aisle` lists ingredients missing from `recipes/config/aisle.conf` and `config/pantry.conf`. When writing or editing files, save them under `recipes/` and run `make doctor` before claiming success.
+**Project workflow.** Use the local CookCLI. From the repository root, run `make doctor` to validate recipes, `cook recipe read <path>` to inspect one, and `make search TERM=<word>` to search. Keep `.cook` files and recipe images under `recipes/`.
 
 Author and run **Jinja2 report templates** over the user's recipes with the
 `render_report` tool — or reuse a saved one — then answer from the output or
