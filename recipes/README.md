@@ -9,10 +9,6 @@ Personal recipe collection in [Cooklang](https://cooklang.org) — plain-text
 | --- | --- |
 | `*.cook` (root + folders) | Recipes — root for main dishes, folders for categories (e.g. `Breakfast/`, `Shared/`) |
 | recipe images | Live next to their recipe: `Risotto.jpg` is the cover. `Risotto.N.jpg` attaches a photo to step `N` (1-based, global step order across all `== sections ==`). URLs also accepted via `image:` / `images:` metadata keys. Formats: `.jpg/.jpeg/.png/.gif/.webp/.avif` |
-| `*.menu` | Meal plans that combine recipes |
-| `config/aisle.conf` | Maps ingredients to supermarket aisles (used by shopping lists) |
-| `config/pantry.conf` | What you already have — shopping lists exclude these |
-| `db/` | Per-ingredient shopping extras (urgency, notes) |
 | `reports/*.jinja` | Jinja templates for `cook report` (cost, ingredients, recipe cards) |
 
 ## Install CookCLI
@@ -22,21 +18,21 @@ Personal recipe collection in [Cooklang](https://cooklang.org) — plain-text
 
 ## Everyday commands
 
+This directory is for recipes and recipe-related assets. Pantry inventory,
+shopping lists, and meal-plan `.menu` files are outside this cookbook's scope.
+
 ```sh
 # Read a recipe (scale with a suffix, e.g. "Risotto.cook:2" for double)
 cook recipe read "Risotto.cook"
 
-# Combined shopping list, grouped by aisle, minus pantry items
-cook sl "Weekly Plan.menu"
-
-# Full-text search over everything
+# Full-text search over recipes
 cook search tomato
 
 # Import any recipe from a URL into a clean .cook file
 cook import <url>
 
-# Check the collection for errors / missing aisle+pantry entries
-cook doctor
+# Validate all recipes
+cook doctor validate
 
 # Browse locally in a browser
 cook server
@@ -60,4 +56,4 @@ Boil @water{1%L} with @salt{1%tbsp}, cook @spaghetti{200%g} for ~{8%min}.
 Toss with @pesto{3%tbsp} and top with @parmesan{grated} and @black pepper{}.
 ```
 
-Then `cook doctor` to catch typos, and commit.
+Then `cook doctor validate` to review errors and warnings, and commit.
