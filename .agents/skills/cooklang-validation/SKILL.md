@@ -35,3 +35,9 @@ organization uses frontmatter tags, not directories.
 7. Separate steps with blank lines so each step remains distinct.
 8. Keep every recipe directly in `recipes/`; use lowercase, hyphenated tags
    for course, cuisine, technique, and reusable components.
+9. Format frontmatter `time:` with single, canonical Cooklang time units (such
+   as `time: 40 min`, `time: 75 min`, or `time: 8 hours`). Do not use
+   multi-unit expressions like `1 hr 15 min` (`hr` is unrecognized) or ranges
+   like `4 to 8 hours` (`to` is parsed as an invalid unit). For descriptive
+   ranges or breakdowns, use `time required: 1 hour 15 minutes` or
+   `prep time:` / `cook time:`.
